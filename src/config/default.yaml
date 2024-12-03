@@ -1,0 +1,129 @@
+# --- Defaults ---
+
+# --- pymarl options ---
+runner: "episode" # Runs 1 env for an episode
+mac: "basic_mac" # Basic controller
+env: "sc2" # Environment name
+env_args: {} # Arguments for the environment
+batch_size_run: 1 # Number of environments to run in parallel
+test_nepisode: 20 # Number of episodes to test for
+test_interval: 2000 # Test after {} timesteps have passed
+test_greedy: True # Use greedy evaluation (if False, will set epsilon floor to 0
+log_interval: 2000 # Log summary of stats after every {} timesteps
+runner_log_interval: 2000 # Log runner stats (not test stats) every {} timesteps
+learner_log_interval: 2000 # Log training stats every {} timesteps
+t_max: 10000 # Stop running after this many timesteps
+use_cuda: False # Use gpu by default unless it isn't available
+buffer_cpu_only: True # If true we won't keep all of the replay buffer in vram
+
+# --- Logging options ---
+use_tensorboard: True # Log results to tensorboard
+save_model: True # Save the models to disk
+save_model_interval: 200000 # Save models after this many timesteps
+checkpoint_path: "" # results/mer/agent/models/qmix_3m_2024-07-26_14-40-23
+evaluate: False # Evaluate model for test_nepisode episodes and quit (no training)
+load_step: 0 # Load model trained on this many timesteps (0 if choose max possible)
+save_replay: False # Saving the replay of the model loaded from checkpoint_path
+local_results_path: "results/fop_adv_tar_loss/agent/" # Path for local results
+
+# --- RL hyperparameters ---
+gamma: 0.99
+batch_size: 32 # Number of episodes to train on
+buffer_size: 32 # Size of the replay buffer
+lr: 0.0005 # Learning rate for agents
+critic_lr: 0.0005 # Learning rate for critics
+optim_alpha: 0.99 # RMSProp alpha
+optim_eps: 0.00001 # RMSProp epsilon
+grad_norm_clip: 10 # Reduce magnitude of gradients above this L2 norm
+
+# --- Agent parameters ---
+agent: "rnn" # Default rnn agent
+adv_agent: "diffusion_rnn" # diffusion_mlp, diffusion_rnn
+
+rnn_hidden_dim: 64 # Size of hidden state for default rnn agent
+hidden_size: 64 # Size of hidden state for default mlp agent
+obs_agent_id: True # Include the agent's one_hot id in the observation
+obs_last_action: True # Include the agent's last action (one_hot) in the observation
+obs_last_action_adv: False
+# --- Experiment running params ---
+repeat_id: 1
+label: "default_label"
+# self.args.attack_method == 
+# --- Adversarial params ---
+Number_attack: 3
+attack_method: "fop_adv_tar" # "fop_adv_tar" "mer" "rand_noise", "fgsm", "atla", "adv_tar", "adv_reg", "gaussian", "mer"
+adv_mac: "fop_mac"
+adv_action_selector: "multinomial"
+epsilon_ball: 0.25
+attack_niters: 30 # If use pgd
+verbose: False
+adv_local_results_path: "results/fop_adv_tar_loss/adv/"
+adv_load_step: 0
+adv_checkpoint_path: "" 
+adv_batch_size_run: 1
+adv_batch_size: 32
+kappa: 0.1 # If use adv_reg
+hinge_c: 10 # If use adv_reg
+# 3s_vs_3z
+
+# --- Mappo adversarial params ---
+mappo_hidden_dim: 64
+mappo_gamma: 0.98
+mappo_lambda: 0.9
+mappo_epsilon: 0.2
+mappo_epochs: 10
+
+# --- MER adversarial params ---
+# multinomial action selector
+
+action_selector_mer: ~
+
+mask_before_softmax: False
+
+
+lr: 0.0005
+c_lr: 0.0005
+
+agent_output_type_mer: "pi_logits"
+td_lambda: 0.8
+learner_mer: "fop_learner"
+
+
+mixing_embed_dim: 32
+n_head: 4  
+burn_in_period: 100
+
+
+# use QPLEX
+mixing_embed_dim: 32
+hypernet_embed: 64
+adv_hypernet_layers: 1
+adv_hypernet_embed: 64
+
+# use QATTEN
+n_head: 4  
+attend_reg_coef: 0.001  
+burn_in_period: 100
+
+kappa_min: 0.05
+kappa_max: 0.5
+loop_c: 3
+start_step: 20000
+
+# --------------------------diffusion-------------------------
+# adv_agent: "diffusion"
+diffusionagent: 'mlp'
+time_dim: 32
+noise_ratio: 0.5
+beta_schedule: "cosine"
+n_timesteps: 5
+loss_type: 'l2'
+clip_denoised: True
+predict_epsilon: True
+action_lr: 0.03
+action_gradient_steps: 1
+#python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=8m t_max=2050000
+
+# python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=8m evaluate=True Number_attack=1 attack_method=fop_adv_tar checkpoint_path=results/fop_adv_tar/agent/models/qmix_8m-0-1_2024-09-16_08-09-00/ adv_checkpoint_path=results/fop_adv_tar/adv/models/qmix_8m-0-1_2024-09-16_08-09-00
+# Version: 0.10.8
+
