@@ -11,5 +11,10 @@ python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=8m Numb
 ## Train models based on ATSA
 
 ```shell
-python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=8m Number_attack=0
+python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=8m Number_attack=8 attack_method=fop_adv_tar 
+```
+
+## Testing
+```shell
+python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=8m evaluate=True Number_attack=8 attack_method=fop_adv_tar checkpoint_path=results/xxx adv_checkpoint_path=results/xxx
 ```
